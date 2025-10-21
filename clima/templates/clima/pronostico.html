@@ -1,0 +1,58 @@
+{% extends "clima/base.html" %}
+{% block title %}Pronóstico · Clima{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 m-0">{{ nombre|default:"Ubicación" }}</h1>
+    <a class="btn btn-secondary" href="/">Buscar otra ciudad</a>
+  </div>
+  <p class="text-muted">Coordenadas: {{ lat }}, {{ lon }}</p>
+
+  {% if current %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-1">Clima actual</h5>
+        <div class="row">
+          <div class="col-md-4">
+            <div><strong>Temperatura:</strong> {{ current.temperature }} °C</div>
+            <div><strong>Viento:</strong> {{ current.windspeed }} km/h</div>
+            <div><strong>Dirección:</strong> {{ current.winddirection }}°</div>
+          </div>
+          <div class="col-md-8">
+            <small class="text-muted">Hora de referencia: {{ current.time }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <h5 class="mb-2">Próximos 7 días</h5>
+  {% if dias %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Condición</th>
+            <th>Máx (°C)</th>
+            <th>Mín (°C)</th>
+            <th>Prec. total (mm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in dias %}
+            <tr>
+              <td>{{ d.fecha }}</td>
+              <td>{{ d.clima }}</td>
+              <td>{{ d.tmax }}</td>
+              <td>{{ d.tmin }}</td>
+              <td>{{ d.lluvia_mm }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted">No hay datos de pronóstico disponibles.</p>
+  {% endif %}
+{% endblock %}
